@@ -27,23 +27,25 @@ def encrypt_image(image_path):
 
 # Fungsi untuk mendekripsi gambar
 def decrypt_image(image_path):
-    # Mendapatkan data piksel dari gambar terenkripsi
-    pixels = encrypted_image.load()
-    width, height = encrypted_image.size
+    image = Image.open(image_path)  # Membuka gambar dari path
+
+    # Mendapatkan data piksel dari gambar
+    pixels = image.load()
+    width, height = image.size
 
     # Proses dekripsi untuk setiap piksel
     for i in range(width):
         for j in range(height):
-            if random.random() < 0.3:  # Menerapkan efek blur acak pada 30% piksel
+            if random.random() < 0.3:  # Menerapkan efek dekripsi untuk 30% piksel yang terenkripsi
                 r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
+                # Logika dekripsi untuk mengembalikan gambar ke keadaan semula
                 rand_i = random.randint(max(0, i - 1), min(i + 1, width - 1))
                 rand_j = random.randint(max(0, j - 1), min(j + 1, height - 1))
                 rand_r, rand_g, rand_b = pixels[rand_i, rand_j]
-                pixels[i, j] = ((r * 2 - rand_r), (g * 2 - rand_g), (b * 2 - rand_b))  # Memperbarui nilai piksel
+                pixels[i, j] = ((r * 2) - rand_r, (g * 2) - rand_g, (b * 2) - rand_b)  # Memperbarui nilai piksel
 
-    decrypted_image = encrypted_image  # Mengembalikan gambar yang sudah didekripsi
+    decrypted_image = image  # Mengembalikan gambar yang sudah didekripsi
     return decrypted_image
-
 # Fungsi utama
 def main():
     st.title("Image Encryption and Decryption")
