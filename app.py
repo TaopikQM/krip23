@@ -3,7 +3,7 @@ from PIL import Image
 
 # Fungsi untuk mengenkripsi gambar
 def encrypt_image(image_path):
-    image = Image.open(image_path)  # Membuka gambar dari path
+     image = Image.open(image_path)  # Membuka gambar dari path
 
     # Mendapatkan data piksel dari gambar
     pixels = image.load()
@@ -12,35 +12,34 @@ def encrypt_image(image_path):
     # Proses enkripsi untuk setiap piksel
     for i in range(width):
         for j in range(height):
-            r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
-            # Logika enkripsi di sini
-            r = (r + 100) % 256
-            g = (g + 50) % 256
-            b = (b + 150) % 256
-            pixels[i, j] = (r, g, b)  # Memperbarui nilai piksel
+            if random.random() < 0.3:  # Menerapkan efek blur acak pada 30% piksel
+                r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
+                # Logika blur acak titik-titik di sini
+                rand_i = random.randint(max(0, i - 1), min(i + 1, width - 1))
+                rand_j = random.randint(max(0, j - 1), min(j + 1, height - 1))
+                rand_r, rand_g, rand_b = pixels[rand_i, rand_j]
+                pixels[i, j] = ((r + rand_r) // 2, (g + rand_g) // 2, (b + rand_b) // 2)  # Memperbarui nilai piksel
 
     encrypted_image = image  # Mengembalikan gambar yang sudah dienkripsi
     return encrypted_image
 
 # Fungsi untuk mendekripsi gambar
 def decrypt_image(image_path):
-    image = Image.open(image_path)  # Membuka gambar dari path
-
-    # Mendapatkan data piksel dari gambar
-    pixels = image.load()
-    width, height = image.size
+    # Mendapatkan data piksel dari gambar terenkripsi
+    pixels = encrypted_image.load()
+    width, height = encrypted_image.size
 
     # Proses dekripsi untuk setiap piksel
     for i in range(width):
         for j in range(height):
-            r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
-            # Logika dekripsi di sini
-            r = (r - 100) % 256
-            g = (g - 50) % 256
-            b = (b - 150) % 256
-            pixels[i, j] = (r, g, b)  # Memperbarui nilai piksel
+            if random.random() < 0.3:  # Menerapkan efek blur acak pada 30% piksel
+                r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
+                rand_i = random.randint(max(0, i - 1), min(i + 1, width - 1))
+                rand_j = random.randint(max(0, j - 1), min(j + 1, height - 1))
+                rand_r, rand_g, rand_b = pixels[rand_i, rand_j]
+                pixels[i, j] = ((r * 2 - rand_r), (g * 2 - rand_g), (b * 2 - rand_b))  # Memperbarui nilai piksel
 
-    decrypted_image = image  # Mengembalikan gambar yang sudah didekripsi
+    decrypted_image = encrypted_image  # Mengembalikan gambar yang sudah didekripsi
     return decrypted_image
 
 # Fungsi utama
