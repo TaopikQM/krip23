@@ -1,8 +1,10 @@
 import streamlit as st
 from PIL import Image
+import random
 
 # Fungsi untuk mengenkripsi gambar
 # Fungsi untuk mengenkripsi gambar
+# Fungsi untuk mengenkripsi gambar dengan efek blur acak
 def encrypt_image(image_path):
     image = Image.open(image_path)  # Membuka gambar dari path
 
@@ -10,7 +12,7 @@ def encrypt_image(image_path):
     pixels = image.load()
     width, height = image.size
 
-    # Proses enkripsi untuk setiap piksel
+    # Proses enkripsi dengan efek blur acak untuk setiap piksel
     for i in range(width):
         for j in range(height):
             if random.random() < 0.3:  # Menerapkan efek blur acak pada 30% piksel
@@ -23,9 +25,6 @@ def encrypt_image(image_path):
 
     encrypted_image = image  # Mengembalikan gambar yang sudah dienkripsi
     return encrypted_image
-
-
-
 
 # Fungsi untuk mendekripsi gambar
 def decrypt_image(image_path):
