@@ -5,25 +5,23 @@ import random
 # Fungsi untuk mengenkripsi gambar
 # Fungsi untuk mengenkripsi gambar
 # Fungsi untuk mengenkripsi gambar dengan efek blur acak
+# Fungsi untuk mengenkripsi gambar dengan efek blur Gaussian acak
 def encrypt_image(image_path):
     image = Image.open(image_path)  # Membuka gambar dari path
+    new_image = image.copy()  # Membuat salinan gambar
 
     # Mendapatkan data piksel dari gambar
-    pixels = image.load()
-    width, height = image.size
+    pixels = new_image.load()
+    width, height = new_image.size
 
-    # Proses enkripsi dengan efek blur acak untuk setiap piksel
+    # Proses enkripsi dengan efek blur Gaussian acak untuk setiap piksel
     for i in range(width):
         for j in range(height):
             if random.random() < 0.3:  # Menerapkan efek blur acak pada 30% piksel
-                r, g, b = pixels[i, j]  # Mendapatkan nilai warna RGB
-                # Logika blur acak titik-titik di sini
-                rand_i = random.randint(max(0, i - 1), min(i + 1, width - 1))
-                rand_j = random.randint(max(0, j - 1), min(j + 1, height - 1))
-                rand_r, rand_g, rand_b = pixels[rand_i, rand_j]
-                pixels[i, j] = ((r + rand_r) // 2, (g + rand_g) // 2, (b + rand_b) // 2)  # Memperbarui nilai piksel
+                radius = random.randint(1, 2)  # Ukuran radius untuk blur Gaussian
+                new_image.paste(image.filter(ImageFilter.GaussianBlur(radius)), (i, j))
 
-    encrypted_image = image  # Mengembalikan gambar yang sudah dienkripsi
+    encrypted_image = new_image  # Mengembalikan gambar yang sudah dienkripsi
     return encrypted_image
 # Fungsi untuk mendekripsi gambar
 def decrypt_image(image_path):
