@@ -25,6 +25,7 @@ def encrypt_image(image_path):
     return encrypted_image
 
 
+
 # Fungsi untuk mendekripsi gambar
 def decrypt_image(image_path):
     image = Image.open(image_path)  # Membuka gambar dari path
